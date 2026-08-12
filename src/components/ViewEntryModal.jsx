@@ -1,324 +1,139 @@
 import { useState } from "react";
 
-function AddEntryModal({ isOpen, onClose, onAddEntry, entries }) {
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
-  const [image, setImage] = useState("");
-  const [content, setContent] = useState("");
+function ViewEntryModal({ entry, onClose }) {
+  const [answer, setAnswer] = useState("");
+  const [unlocked, setUnlocked] = useState(false);
   const [error, setError] = useState("");
 
-  if (!isOpen) return null;
+  if (!entry) {
+    return null;
+  }
 
-  function resetForm() {
-    setTitle("");
-    setDate("");
-    setImage("");
-    setContent("");
-    setError("");
+  function handleUnlock(event) {
+    event.preventDefault();
+
+    const normalizedAnswer = answer.trim().toLowerCase();
+
+    if (normalizedAnswer === "loch") {
+      setUnlocked(true);
+      setError("");
+      return;
+    }
+
+    setError(
+      "❌ Falsch. So leicht kommst du nicht an meine Geheimnisse. 😈"
+    );
   }
 
   function handleClose() {
-    resetForm();
+    setAnswer("");
+    setUnlocked(false);
+    setError("");
     onClose();
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    // Prüfen, ob alle Felder ausgefüllt sind
-    if (
-      !title.trim() ||
-      !date ||
-      !image.trim() ||
-      !content.trim()
-    ) {
-      setError("Bitte füllen Sie alle Felder aus.");
-      return;
-    }
-
-    // Prüfen, ob für diesen Tag schon ein Eintrag existiert
-    const entryExists = entries.some(
-      (entry) => entry.date === date
-    );
-
-    if (entryExists) {
-      setError(
-        "Für diesen Tag existiert bereits ein Eintrag. Komm morgen wieder!"
-      );
-      return;
-    }
-
-    // Neuen Eintrag erstellen
-    const newEntry = {
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      date,
-      image: image.trim(),
-      content: content.trim(),
-    };
-
-    onAddEntry(newEntry);
-    resetForm();
-    onClose();
-  }
+  const isSecretLocked = entry.secret && !unlocked;
 
   return (
     <div
-      className="
-        fixed inset-0 z-50
-        overflow-y-auto
-        bg-black/70
-        px-4 py-8
-        backdrop-blur-sm
-      "
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
       onClick={handleClose}
     >
-      <div className="flex min-h-full items-start justify-center sm:items-center">
-        <div
-          className="
-            relative
-            w-full max-w-xl
-            rounded-3xl
-            border border-white/10
-            bg-slate-900
-            p-6
-            shadow-2xl
-            sm:p-8
-          "
-          onClick={(event) => event.stopPropagation()}
-        >
-          {/* Kopfbereich */}
-          <div className="flex items-start justify-between gap-6">
-            <div>
-              <p className="text-sm uppercase tracking-widest text-violet-400">
-                Neue Erinnerung
+      <div
+        className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-white/10 bg-slate-900 p-6 shadow-2xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex justify-end">
+          <button
+            onClick={handleClose}
+            className="btn btn-circle btn-ghost"
+          >
+            ✕
+          </button>
+        </div>
+
+        {isSecretLocked ? (
+          <div className="py-10 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-red-400">
+              Geheimer Eintrag
+            </p>
+
+            <h2 className="mt-4 text-4xl font-bold text-white">
+              🔒 Die wahre Geschichte
+            </h2>
+
+            <p className="mx-auto mt-6 max-w-xl text-lg text-slate-300">
+              Dieser Eintrag bleibt verborgen, bis du das Rätsel löst.
+            </p>
+
+            <div className="mx-auto mt-10 max-w-lg rounded-2xl border border-red-500/30 bg-red-950/20 p-6">
+              <p className="text-xl font-semibold text-white">
+                Was wird größer, je mehr man davon wegnimmt?
               </p>
 
-              <h2 className="mt-2 text-3xl font-bold text-white">
-                Eintrag hinzufügen
-              </h2>
-            </div>
+              <form onSubmit={handleUnlock} className="mt-6">
+                <input
+                  type="text"
+                  value={answer}
+                  onChange={(event) => setAnswer(event.target.value)}
+                  placeholder="Deine Antwort..."
+                  className="input input-bordered w-full"
+                />
 
-            <button
-              type="button"
-              onClick={handleClose}
-              className="
-                flex h-11 w-11
-                shrink-0
-                items-center justify-center
-                rounded-full
-                bg-white/5
-                text-2xl text-white
-                transition
-                hover:bg-red-600
-              "
-              aria-label="Fenster schließen"
-            >
-              ×
-            </button>
+                {error && (
+                  <p className="mt-4 text-red-400">
+                    {error}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  className="btn btn-error mt-6 w-full"
+                >
+                  Rätsel lösen
+                </button>
+              </form>
+            </div>
           </div>
-
-          {/* Formular */}
-          <form
-            onSubmit={handleSubmit}
-            className="mt-8 space-y-5"
-          >
-            {/* Titel */}
-            <div>
-              <label
-                htmlFor="title"
-                className="mb-2 block text-sm font-medium text-slate-300"
-              >
-                Titel
-              </label>
-
-              <input
-                id="title"
-                type="text"
-                value={title}
-                onChange={(event) => {
-                  setTitle(event.target.value);
-                  setError("");
-                }}
-                placeholder="Was ist heute passiert?"
-                className="
-                  w-full
-                  rounded-xl
-                  border border-white/10
-                  bg-slate-950
-                  px-4 py-3
-                  text-white
-                  outline-none
-                  transition
-                  placeholder:text-slate-600
-                  focus:border-violet-500
-                  focus:ring-2
-                  focus:ring-violet-500/20
-                "
-              />
-            </div>
-
-            {/* Datum */}
-            <div>
-              <label
-                htmlFor="date"
-                className="mb-2 block text-sm font-medium text-slate-300"
-              >
-                Datum
-              </label>
-
-              <input
-                id="date"
-                type="date"
-                value={date}
-                onChange={(event) => {
-                  setDate(event.target.value);
-                  setError("");
-                }}
-                className="
-                  w-full
-                  rounded-xl
-                  border border-white/10
-                  bg-slate-950
-                  px-4 py-3
-                  text-white
-                  outline-none
-                  transition
-                  focus:border-violet-500
-                  focus:ring-2
-                  focus:ring-violet-500/20
-                "
-              />
-            </div>
-
-            {/* Bild-URL */}
-            <div>
-              <label
-                htmlFor="image"
-                className="mb-2 block text-sm font-medium text-slate-300"
-              >
-                Bild-URL
-              </label>
-
-              <input
-                id="image"
-                type="url"
-                value={image}
-                onChange={(event) => {
-                  setImage(event.target.value);
-                  setError("");
-                }}
-                placeholder="https://..."
-                className="
-                  w-full
-                  rounded-xl
-                  border border-white/10
-                  bg-slate-950
-                  px-4 py-3
-                  text-white
-                  outline-none
-                  transition
-                  placeholder:text-slate-600
-                  focus:border-violet-500
-                  focus:ring-2
-                  focus:ring-violet-500/20
-                "
-              />
-            </div>
-
-            {/* Inhalt */}
-            <div>
-              <label
-                htmlFor="content"
-                className="mb-2 block text-sm font-medium text-slate-300"
-              >
-                Inhalt
-              </label>
-
-              <textarea
-                id="content"
-                value={content}
-                onChange={(event) => {
-                  setContent(event.target.value);
-                  setError("");
-                }}
-                rows="5"
-                placeholder="Schreibe deine Erinnerung..."
-                className="
-                  w-full
-                  resize-none
-                  rounded-xl
-                  border border-white/10
-                  bg-slate-950
-                  px-4 py-3
-                  text-white
-                  outline-none
-                  transition
-                  placeholder:text-slate-600
-                  focus:border-violet-500
-                  focus:ring-2
-                  focus:ring-violet-500/20
-                "
-              />
-            </div>
-
-            {/* Fehlermeldung */}
-            {error && (
-              <div
-                className="
-                  rounded-xl
-                  border border-red-500/40
-                  bg-red-500/10
-                  px-4 py-3
-                  text-sm text-red-300
-                "
-              >
-                {error}
+        ) : (
+          <>
+            {entry.secret && (
+              <div className="mb-5 rounded-xl border border-green-500/30 bg-green-950/30 p-4 text-center font-semibold text-green-400">
+                🔓 Verdammt ... du hast es geschafft.
               </div>
             )}
 
-            {/* Buttons */}
-            <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-              <button
-                type="button"
-                onClick={handleClose}
-                className="
-                  flex-1
-                  rounded-xl
-                  border border-white/10
-                  bg-white/5
-                  px-6 py-3
-                  font-semibold text-slate-300
-                  transition
-                  hover:bg-white/10
-                  hover:text-white
-                "
-              >
-                Abbrechen
-              </button>
+            <div className="flex justify-center rounded-2xl bg-slate-950/60 p-6">
+  <img
+    src={entry.image}
+    alt={entry.title}
+    className="max-h-[520px] w-auto max-w-full rounded-xl object-contain"
+  />
+</div>
 
-              <button
-                type="submit"
-                className="
-                  flex-1
-                  rounded-xl
-                  bg-violet-600
-                  px-6 py-3
-                  font-semibold text-white
-                  transition
-                  hover:bg-violet-500
-                  hover:shadow-lg
-                  hover:shadow-violet-600/20
-                "
-              >
-                Eintrag speichern
-              </button>
-            </div>
-          </form>
-        </div>
+            <p className="mt-6 text-sm font-medium text-violet-400">
+              {new Date(`${entry.date}T00:00:00`).toLocaleDateString(
+                "de-DE",
+                {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                },
+              )}
+            </p>
+
+            <h2 className="mt-2 text-3xl font-bold text-white">
+              {entry.title}
+            </h2>
+
+            <p className="mt-6 whitespace-pre-line text-lg leading-8 text-slate-300">
+              {entry.content}
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-export default AddEntryModal;
+export default ViewEntryModal;

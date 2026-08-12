@@ -8,7 +8,7 @@ function EntryCard({ entry, onClick }) {
         <img
           src={entry.image}
           alt={entry.title}
-          className="h-56 w-full object-cover transition duration-500 group-hover:scale-110"
+          className="h-56 w-full object-cover blur-[5px] opacity-70 transition duration-500 group-hover:scale-110 group-hover:blur-[3px] group-hover:opacity-80"
         />
       </div>
 
