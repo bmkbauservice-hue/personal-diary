@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function ViewEntryModal({ entry, onClose }) {
   const [answer, setAnswer] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [error, setError] = useState("");
+  const audioRef = useRef(null);
 
   if (!entry) {
     return null;
@@ -17,11 +18,21 @@ function ViewEntryModal({ entry, onClose }) {
     if (normalizedAnswer === "loch") {
       setUnlocked(true);
       setError("");
+
+      audioRef.current
+        ?.play()
+        .catch((playError) => {
+          console.error(
+            "Audio konnte nicht gestartet werden:",
+            playError,
+          );
+        });
+
       return;
     }
 
     setError(
-      "❌ Falsch. So leicht kommst du nicht an meine Geheimnisse. 😈"
+      "❌ Falsch. So leicht kommst du nicht an meine Geheimnisse. 😈",
     );
   }
 
@@ -29,6 +40,12 @@ function ViewEntryModal({ entry, onClose }) {
     setAnswer("");
     setUnlocked(false);
     setError("");
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
     onClose();
   }
 
@@ -43,6 +60,12 @@ function ViewEntryModal({ entry, onClose }) {
         className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-white/10 bg-slate-900 p-6 shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
+        <audio
+          ref={audioRef}
+          src="/audio/wahre-geschichte.mp4"
+          preload="auto"
+        />
+
         <div className="flex justify-end">
           <button
             onClick={handleClose}
@@ -75,7 +98,9 @@ function ViewEntryModal({ entry, onClose }) {
                 <input
                   type="text"
                   value={answer}
-                  onChange={(event) => setAnswer(event.target.value)}
+                  onChange={(event) =>
+                    setAnswer(event.target.value)
+                  }
                   placeholder="Deine Antwort..."
                   className="input input-bordered w-full"
                 />
@@ -103,23 +128,22 @@ function ViewEntryModal({ entry, onClose }) {
               </div>
             )}
 
-            <div className="flex justify-center rounded-2xl bg-slate-950/60 p-6">
-  <img
-    src={entry.image}
-    alt={entry.title}
-    className="max-h-[520px] w-auto max-w-full rounded-xl object-contain"
-  />
-</div>
+            <div className="flex justify-center rounded-2xl bg-slate-950/60 p-4">
+              <img
+                src={entry.image}
+                alt={entry.title}
+                className="max-h-[700px] w-full max-w-full rounded-xl object-contain"
+              />
+            </div>
 
             <p className="mt-6 text-sm font-medium text-violet-400">
-              {new Date(`${entry.date}T00:00:00`).toLocaleDateString(
-                "de-DE",
-                {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                },
-              )}
+              {new Date(
+                `${entry.date}T00:00:00`,
+              ).toLocaleDateString("de-DE", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
             </p>
 
             <h2 className="mt-2 text-3xl font-bold text-white">

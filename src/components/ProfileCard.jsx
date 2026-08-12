@@ -21,11 +21,11 @@ function ProfileCard() {
 
       <div className="relative mt-5 text-center">
         <p className="text-sm uppercase tracking-[0.3em] text-violet-400 transition duration-300 group-hover:text-red-400">
-          Der Besitzer
+          Muju
         </p>
 
         <h3 className="mt-2 text-2xl font-bold text-white">
-          Mein Tagebuch
+          Mein Leben
         </h3>
 
         <p className="mt-3 min-h-7 text-slate-400">
@@ -34,7 +34,7 @@ function ProfileCard() {
           </span>
 
           <span className="hidden font-bold text-red-400 group-hover:inline">
-            Hey! Was machst du an meinem Tagebuch?
+            Naaaa wer bist du den ? Neugierig ?
           </span>
         </p>
       </div>
