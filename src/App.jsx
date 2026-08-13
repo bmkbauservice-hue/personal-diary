@@ -16,10 +16,10 @@ function DiaryPage() {
   id: 1,
   title: "Die wahre Geschichte",
   date: "2026-08-10",
-  image: "/images/wahre-geschichte-collage.png",
+  image: `${import.meta.env.BASE_URL}images/wahre-geschichte-collage.png`,
   content: `Mein Leben war nie geradlinig. Es gab Sport, Ehre, Ehrgeiz und Freiheit, aber ebenso Rückschläge, falsche Entscheidungen, Gefängnis, Luxus, schnelle Autos, Drogen und Alkohol. Es gab Jahre voller Exzess und ein Leben am Limit, ebenso wie harte Arbeit, große Pläne, Erfolge und immer wieder einen Neuanfang.
 
-Vom DDR-Fußball und der Leichtathletik mit Speerwerfen über das Nachtleben bis hin zu meiner Selbstständigkeit – jede dieser Stationen gehört zu meiner Geschichte. Mit MK Solar, BMK Bauservice und BKP Immobilien habe ich Unternehmen aufgebaut, Verantwortung übernommen, Erfolge erlebt und gleichzeitig erfahren, wie schnell sich im Leben Dinge verändern können, die zuvor selbstverständlich erschienen.
+Vom DDR-Oberligaußball und der Leichtathletik mit Speerwerfen über das Nachtleben bis hin zu meiner Selbstständigkeit – jede dieser Stationen gehört zu meiner Geschichte. Mit MK Solar, BMK Bauservice und BKP Immobilien habe ich Unternehmen aufgebaut, Verantwortung übernommen, Erfolge erlebt und gleichzeitig erfahren, wie schnell sich im Leben Dinge verändern können, die zuvor selbstverständlich erschienen.
 
 Heute beginnt erneut ein völlig anderes Kapitel. Programmieren, React, Webentwicklung und künstliche Intelligenz haben mit meinem früheren Berufsleben auf den ersten Blick wenig gemeinsam. Trotzdem gehört auch dieser Weg zu mir. Noch einmal etwas vollständig Neues zu lernen, sich weiterzuentwickeln und mit über 50 nicht einfach stehen zu bleiben, ist für mich kein Widerspruch zu meiner Vergangenheit, sondern eine Konsequenz daraus.
 

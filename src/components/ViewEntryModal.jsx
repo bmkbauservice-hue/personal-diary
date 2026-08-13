@@ -62,7 +62,7 @@ function ViewEntryModal({ entry, onClose }) {
       >
         <audio
           ref={audioRef}
-          src="/audio/wahre-geschichte.mp4"
+          src={`${import.meta.env.BASE_URL}audio/wahre-geschichte.mp4`}
           preload="auto"
         />
 

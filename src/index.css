@@ -1,5 +1,7 @@
 @import "tailwindcss";
+/* stylelint-disable at-rule-no-unknown */
 @plugin "daisyui";
+/* stylelint-enable at-rule-no-unknown */
 @keyframes angryShake {
   0% {
     transform: translateX(0) scale(1.1);
