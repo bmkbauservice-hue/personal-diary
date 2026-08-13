@@ -6,11 +6,11 @@ function Header({ onAddEntry }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
         <div>
           <p className="text-sm uppercase tracking-[0.35em] text-violet-400">
-            Personal Diary
+            Persönliches Tagebuch
           </p>
 
           <h1 className="mt-1 text-3xl font-bold text-white">
-            MyStory
+            Meine Geschichte 
           </h1>
         </div>
 
