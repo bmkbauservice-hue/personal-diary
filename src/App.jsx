@@ -12,20 +12,19 @@ import { loadEntries, saveEntries } from "./utils/storage";
 function DiaryPage() {
   const defaultEntries = [
     {
-      
-  id: 1,
-  title: "Die wahre Geschichte",
-  date: "2026-08-10",
-  image: `${import.meta.env.BASE_URL}images/wahre-geschichte-collage.png`,
-  content: `Mein Leben war nie geradlinig. Es gab Sport, Ehre, Ehrgeiz und Freiheit, aber ebenso Rückschläge, falsche Entscheidungen, Gefängnis, Luxus, schnelle Autos, Drogen und Alkohol. Es gab Jahre voller Exzess und ein Leben am Limit, ebenso wie harte Arbeit, große Pläne, Erfolge und immer wieder einen Neuanfang.
+      id: 1,
+      title: "Die wahre Geschichte",
+      date: "2026-08-10",
+      image: `${import.meta.env.BASE_URL}images/wahre-geschichte-collage.png`,
+      content: `Mein Leben war nie geradlinig. Es gab Sport, Ehre, Ehrgeiz und Freiheit, aber ebenso Rückschläge, falsche Entscheidungen, Gefängnis, Luxus, schnelle Autos, Drogen und Alkohol. Es gab Jahre voller Exzess und ein Leben am Limit, ebenso wie harte Arbeit, große Pläne, Erfolge und immer wieder einen Neuanfang.
 
-Vom DDR-Oberligafußball und der Leichtathletik mit Speerwerfen über das Nachtleben bis hin zu meiner Selbstständigkeit – jede dieser Stationen gehört zu meiner Geschichte. Mit MK Solar, BMK Bauservice und BKP Immobilien habe ich Unternehmen aufgebaut, Verantwortung übernommen, Erfolge erlebt und gleichzeitig erfahren, wie schnell sich im Leben Dinge verändern können, die zuvor selbstverständlich erschienen.
+Vom DDR-Fußball und der Leichtathletik mit Speerwerfen über das Nachtleben bis hin zu meiner Selbstständigkeit – jede dieser Stationen gehört zu meiner Geschichte. Mit MK Solar, BMK Bauservice und BKP Immobilien habe ich Unternehmen aufgebaut, Verantwortung übernommen, Erfolge erlebt und gleichzeitig erfahren, wie schnell sich im Leben Dinge verändern können, die zuvor selbstverständlich erschienen.
 
 Heute beginnt erneut ein völlig anderes Kapitel. Programmieren, React, Webentwicklung und künstliche Intelligenz haben mit meinem früheren Berufsleben auf den ersten Blick wenig gemeinsam. Trotzdem gehört auch dieser Weg zu mir. Noch einmal etwas vollständig Neues zu lernen, sich weiterzuentwickeln und mit über 50 nicht einfach stehen zu bleiben, ist für mich kein Widerspruch zu meiner Vergangenheit, sondern eine Konsequenz daraus.
 
 Mit den Jahren verändert sich auch der Blick auf die eigene Zeit. Viele Freunde und Menschen, die mich über längere Abschnitte meines Lebens begleitet haben, sind inzwischen verstorben. Dadurch wird einem sehr deutlich bewusst, dass Zeit nicht unbegrenzt zur Verfügung steht.
 
-„Momento Mori“ ist deshalb zu meinem Lebensmotto geworden: Bedenke, dass du sterblich bist. Für mich hat dieser Satz nichts Düsteres. Er erinnert mich vielmehr daran, dass das Leben zu kurz ist, um dauerhaft stehen zu bleiben, wichtige Entscheidungen endlos aufzuschieben oder aus Angst vor Veränderungen Möglichkeiten ungenutzt verstreichen zu lassen.
+„Memento Mori“ ist deshalb zu meinem Lebensmotto geworden: Bedenke, dass du sterblich bist. Für mich hat dieser Satz nichts Düsteres. Er erinnert mich vielmehr daran, dass das Leben zu kurz ist, um dauerhaft stehen zu bleiben, wichtige Entscheidungen endlos aufzuschieben oder aus Angst vor Veränderungen Möglichkeiten ungenutzt verstreichen zu lassen.
 
 Wer einen großen Teil seines Lebens noch vor sich hat, dem kann ich aus meiner eigenen Erfahrung nur empfehlen, sich gelegentlich bewusst zu fragen, was wirklich wichtig ist, wohin der eigene Weg führen soll und welche Entscheidungen man später nicht bereuen möchte.
 
@@ -34,8 +33,8 @@ Die Vergangenheit lässt sich nicht ändern. Man kann aber Verantwortung für si
 Dieses Bild steht deshalb nicht nur für Erinnerungen. Es steht für Erfolge und Fehler, gute und schlechte Entscheidungen, Höhen und Tiefen, Menschen, die geblieben sind, und Menschen, die nicht mehr da sind.
 
 Und vor allem für eines: Egal wie oft das Leben mich zurückgeworfen hat – ich bin immer wieder aufgestanden.`,
-secret: true,
-},
+      secret: true,
+    },
     {
       id: 2,
       title: "Der Tag, an dem ich nichts gemacht habe",
@@ -171,30 +170,6 @@ secret: true,
       return defaultEntries;
     }
 
-    const savedEntriesById = new Map(
-      savedEntries.map((entry) => [entry.id, entry]),
-    );
-
-    const mergedEntries = defaultEntries.map((defaultEntry) => {
-      const savedEntry = savedEntriesById.get(defaultEntry.id);
-
-      if (defaultEntry.id === 1) {
-        return {
-          ...savedEntry,
-          ...defaultEntry,
-        };
-      }
-
-      if (savedEntry) {
-        return {
-          ...defaultEntry,
-          ...savedEntry,
-        };
-      }
-
-      return defaultEntry;
-    });
-
     const customEntries = savedEntries.filter(
       (savedEntry) =>
         !defaultEntries.some(
@@ -202,7 +177,7 @@ secret: true,
         ),
     );
 
-    return [...customEntries, ...mergedEntries].sort(
+    return [...customEntries, ...defaultEntries].sort(
       (a, b) => new Date(b.date) - new Date(a.date),
     );
   });
