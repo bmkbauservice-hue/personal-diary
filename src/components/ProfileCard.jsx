@@ -1,44 +1,49 @@
-function ProfileCard() {
-  const baseUrl = import.meta.env.BASE_URL;
-
+function ProfileCard({ onAngryChange }) {
   return (
-    <div className="group relative mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-violet-500/30 bg-slate-900/70 p-6 shadow-2xl shadow-violet-950/30 transition duration-500 hover:-translate-y-2 hover:border-red-500/60 hover:shadow-red-950/50">
-      <div className="absolute inset-0 bg-linear-to-br from-violet-500/10 via-transparent to-transparent transition duration-500 group-hover:opacity-0" />
-
-      <div className="absolute inset-0 bg-linear-to-br from-red-500/20 via-transparent to-red-950/30 opacity-0 transition duration-500 group-hover:opacity-100" />
-
-      <div className="relative h-[430px] overflow-hidden rounded-2xl bg-slate-950/70">
+    <div className="flex justify-center lg:justify-end">
+      <div
+        className="group relative h-80 w-80 overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 shadow-2xl"
+        onMouseEnter={() => onAngryChange(true)}
+        onMouseLeave={() => onAngryChange(false)}
+      >
+        {/* Normales Profilbild */}
         <img
-          src={`${baseUrl}images/profile-normal.png`}
-          alt="Profil"
-          className="absolute inset-0 h-full w-full object-contain transition duration-500 group-hover:scale-105 group-hover:opacity-0"
+          src={`${import.meta.env.BASE_URL}images/profile-normal.png`}
+          alt="Muju"
+          className="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:opacity-0"
         />
 
+        {/* Böses Profilbild */}
         <img
-          src={`${baseUrl}images/profile-angry.png`}
-          alt="Wütendes Profil"
-          className="absolute inset-0 h-full w-full object-contain opacity-0 transition duration-500 group-hover:scale-110 group-hover:opacity-100"
+          src={`${import.meta.env.BASE_URL}images/profile-angry.png`}
+          alt="Böser Muju"
+          className="absolute inset-0 h-full w-full scale-110 object-cover opacity-0 transition-all duration-500 group-hover:scale-100 group-hover:opacity-100"
         />
-      </div>
 
-      <div className="relative mt-5 text-center">
-        <p className="text-sm uppercase tracking-[0.3em] text-violet-400 transition duration-300 group-hover:text-red-400">
-          Muju
-        </p>
+        {/* Abdunklung unten */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-        <h3 className="mt-2 text-2xl font-bold text-white">
-          Mein Leben
-        </h3>
+        {/* Normaler Text */}
+        <div className="absolute bottom-5 left-5 transition-all duration-300 group-hover:translate-y-4 group-hover:opacity-0">
+          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
+            Mein Tagebuch
+          </p>
 
-        <p className="mt-3 min-h-7 text-slate-400">
-          <span className="group-hover:hidden">
-            Persönliche Erinnerungen und Gedanken.
-          </span>
+          <h3 className="mt-1 text-2xl font-bold text-white">
+            Muju
+          </h3>
+        </div>
 
-          <span className="hidden font-bold text-red-400 group-hover:inline">
-            Naaaa wer bist du denn? Neugierig?
-          </span>
-        </p>
+        {/* Text beim bösen Muju */}
+        <div className="pointer-events-none absolute bottom-5 left-5 right-5 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+          <p className="text-sm font-bold uppercase tracking-widest text-red-400">
+            Vorsicht 😈
+          </p>
+
+          <h3 className="mt-1 text-xl font-bold text-white">
+            Wer bist du ? Neugierig ?
+          </h3>
+        </div>
       </div>
     </div>
   );
