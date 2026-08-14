@@ -18,7 +18,7 @@ function DiaryPage() {
       image: `${import.meta.env.BASE_URL}images/wahre-geschichte-collage.png`,
       content: `Mein Leben war nie geradlinig. Es gab Sport, Ehre, Ehrgeiz und Freiheit, aber ebenso Rückschläge, falsche Entscheidungen, Gefängnis, Luxus, schnelle Autos, Drogen und Alkohol. Es gab Jahre voller Exzess und ein Leben am Limit, ebenso wie harte Arbeit, große Pläne, Erfolge und immer wieder einen Neuanfang.
 
-Vom DDR-Oberligafußball und der Leichtathletik mit Speerwerfen über das Nachtleben bis hin zu meiner Selbstständigkeit – jede dieser Stationen gehört zu meiner Geschichte. Mit MK Solar, BMK Bauservice und BKP Immobilien habe ich Unternehmen aufgebaut, Verantwortung übernommen, Erfolge erlebt und gleichzeitig erfahren, wie schnell sich im Leben Dinge verändern können, die zuvor selbstverständlich erschienen.
+Vom DDR-Fußball und der Leichtathletik mit Speerwerfen über das Nachtleben bis hin zu meiner Selbstständigkeit – jede dieser Stationen gehört zu meiner Geschichte. Mit MK Solar, BMK Bauservice und BKP Immobilien habe ich Unternehmen aufgebaut, Verantwortung übernommen, Erfolge erlebt und gleichzeitig erfahren, wie schnell sich im Leben Dinge verändern können, die zuvor selbstverständlich erschienen.
 
 Heute beginnt erneut ein völlig anderes Kapitel. Programmieren, React, Webentwicklung und künstliche Intelligenz haben mit meinem früheren Berufsleben auf den ersten Blick wenig gemeinsam. Trotzdem gehört auch dieser Weg zu mir. Noch einmal etwas vollständig Neues zu lernen, sich weiterzuentwickeln und mit über 50 nicht einfach stehen zu bleiben, ist für mich kein Widerspruch zu meiner Vergangenheit, sondern eine Konsequenz daraus.
 
@@ -185,6 +185,8 @@ Und vor allem für eines: Egal wie oft das Leben mich zurückgeworfen hat – ic
   const [selectedEntryId, setSelectedEntryId] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
 
+  const [isAngry, setIsAngry] = useState(false);
+
   const selectedEntry =
     entries.find((entry) => entry.id === selectedEntryId) ?? null;
 
@@ -201,46 +203,91 @@ Und vor allem für eines: Egal wie oft das Leben mich zurückgeworfen hat – ic
   }
 
   return (
-    <>
-      <Header onAddEntry={() => setShowAddModal(true)} />
+    <div className="relative min-h-screen overflow-hidden">
+      <div
+        className={`fixed inset-0 bg-slate-950 transition-opacity duration-700 ${
+          isAngry ? "opacity-0" : "opacity-100"
+        }`}
+      />
 
-      <main className="mx-auto max-w-7xl px-6 py-12">
-        <section className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <p className="text-violet-400">
-              Mein persönliches Tagebuch
-            </p>
+      <div
+        className={`fixed inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700 ${
+          isAngry ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/muju-hover-background.png)`,
+        }}
+      />
 
-            <h2 className="mt-2 text-5xl font-bold">
-              Meine Erinnerungen.
-            </h2>
+      <div
+        className={`fixed inset-0 transition-all duration-700 ${
+          isAngry
+            ? "bg-black/55 backdrop-blur-[1px]"
+            : "bg-transparent"
+        }`}
+      />
 
-            <p className="mt-4 max-w-2xl text-lg text-slate-400">
-              Ein Ort für besondere Momente, Gedanken und Geschichten,
-              die ich nicht vergessen möchte.
-            </p>
-          </div>
+      <div className="relative z-10">
+        <Header onAddEntry={() => setShowAddModal(true)} />
 
-          <ProfileCard />
-        </section>
+        <main className="mx-auto max-w-7xl px-6 py-12">
+          <section className="grid items-center gap-12 lg:grid-cols-2">
+            <div
+              className={`transition-all duration-700 ${
+                isAngry
+                  ? "rounded-3xl bg-black/60 p-8 shadow-2xl backdrop-blur-sm"
+                  : ""
+              }`}
+            >
+              <p
+                className={`transition-colors duration-700 ${
+                  isAngry ? "text-amber-400" : "text-violet-400"
+                }`}
+              >
+                Mein persönliches Tagebuch
+              </p>
 
-        <section className="mt-14">
-          <div className="mb-7 flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">
-              Meine Einträge
-            </h3>
+              <h2 className="mt-2 text-5xl font-bold">
+                Meine Erinnerungen.
+              </h2>
 
-            <span className="text-sm text-slate-500">
-              {entries.length} Einträge
-            </span>
-          </div>
+              <p className="mt-4 max-w-2xl text-lg text-slate-300">
+                Ein Ort für besondere Momente, Gedanken und Geschichten,
+                die ich nicht vergessen möchte.
+              </p>
+            </div>
 
-          <EntryList
-            entries={entries}
-            onEntryClick={(entry) => setSelectedEntryId(entry.id)}
-          />
-        </section>
-      </main>
+            <ProfileCard onAngryChange={setIsAngry} />
+          </section>
+
+          <section className="mt-14">
+            <div className="mb-7 flex items-center justify-between">
+              <h3 className="text-2xl font-semibold">
+                Meine Einträge
+              </h3>
+
+              <span className="text-sm text-slate-400">
+                {entries.length} Einträge
+              </span>
+            </div>
+
+            <div
+              className={`rounded-3xl transition-all duration-700 ${
+                isAngry
+                  ? "bg-black/45 p-5 shadow-2xl backdrop-blur-sm"
+                  : ""
+              }`}
+            >
+              <EntryList
+                entries={entries}
+                onEntryClick={(entry) =>
+                  setSelectedEntryId(entry.id)
+                }
+              />
+            </div>
+          </section>
+        </main>
+      </div>
 
       <ViewEntryModal
         entry={selectedEntry}
@@ -253,7 +300,7 @@ Und vor allem für eines: Egal wie oft das Leben mich zurückgeworfen hat – ic
         onAddEntry={handleAddEntry}
         entries={entries}
       />
-    </>
+    </div>
   );
 }
 
